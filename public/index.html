@@ -3223,40 +3223,40 @@
       let installedCount = 0;
       
       if (wallets.length === 0) {
-        // No supported wallets found
+        // No supported wallets found - show deep linking modal instead
         walletList.innerHTML = `
-          <div class="no-wallets-message" style="text-align: center; padding: 30px; color: #666;">
-            <h4 style="color: #dc3545; margin-bottom: 15px;">⚠️ No Supported Wallets Found</h4>
-            <p style="margin-bottom: 20px;">This dApp requires wallets with full Solana support. Please install one of these:</p>
-            <div class="wallet-install-links" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-              <a href="https://phantom.app/" target="_blank" class="wallet-install-link" style="
-                display: flex; align-items: center; gap: 10px; padding: 12px 20px; 
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                color: white; text-decoration: none; border-radius: 8px; font-weight: bold;
-              ">
-                <img src="/phantom-logo.png" alt="Phantom" style="width: 24px; height: 24px;">
-                <span>Install Phantom</span>
-              </a>
-              <a href="https://solflare.com/" target="_blank" class="wallet-install-link" style="
-                display: flex; align-items: center; gap: 10px; padding: 12px 20px; 
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                color: white; text-decoration: none; border-radius: 8px; font-weight: bold;
-              ">
-                <img src="/solflare-logo.png" alt="Solflare" style="width: 24px; height: 24px;">
-                <span>Install Solflare</span>
-              </a>
-              <a href="https://glow.app/" target="_blank" class="wallet-install-link" style="
-                display: flex; align-items: center; gap: 10px; padding: 12px 20px; 
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                color: white; text-decoration: none; border-radius: 8px; font-weight: bold;
-              ">
-                <img src="/glow-logo.png" alt="Glow" style="width: 24px; height: 24px;">
-                <span>Install Glow</span>
-              </a>
+          <div class="deep-link-section" style="margin-top: 0;">
+            <div class="deep-link-header">
+              <h4>🌐 Mobile Wallet Deep Link</h4>
+              <p>No wallets detected on this device. Use deep linking to open your mobile wallet:</p>
             </div>
-            <p style="margin-top: 20px; font-size: 14px; color: #888; font-style: italic;">
-              Note: Only wallets with complete Solana functionality are compatible with this dApp.
-            </p>
+            <div class="deep-link-buttons">
+              <button class="deep-link-btn" data-wallet="phantom" onclick="window.deepLinkHandler.openDeepLink('phantom')">
+                <img src="/phantom-logo.png" alt="Phantom" class="wallet-icon">
+                <span>Open Phantom</span>
+              </button>
+              <button class="deep-link-btn" data-wallet="solflare" onclick="window.deepLinkHandler.openDeepLink('solflare')">
+                <img src="/solflare-logo.png" alt="Solflare" class="wallet-icon">
+                <span>Open Solflare</span>
+              </button>
+              <button class="deep-link-btn" data-wallet="backpack" onclick="window.deepLinkHandler.openDeepLink('backpack')">
+                <img src="/backpack-logo.png" alt="Backpack" class="wallet-icon">
+                <span>Open Backpack</span>
+              </button>
+              <button class="deep-link-btn" data-wallet="glow" onclick="window.deepLinkHandler.openDeepLink('glow')">
+                <img src="/glow-logo.png" alt="Glow" class="wallet-icon">
+                <span>Open Glow</span>
+              </button>
+              <button class="deep-link-btn" data-wallet="exodus" onclick="window.deepLinkHandler.openDeepLink('exodus')">
+                <img src="/logo.png" alt="Exodus" class="wallet-icon">
+                <span>Open Exodus</span>
+              </button>
+            </div>
+            <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 210, 63, 0.1); border-radius: 10px; border: 1px solid rgba(255, 210, 63, 0.3);">
+              <p style="margin: 0; color: #ffd23f; font-size: 14px; font-weight: 600;">
+                💡 Deep linking will open your mobile wallet app and connect to this dApp
+              </p>
+            </div>
           </div>
         `;
         return;
@@ -3305,55 +3305,45 @@
       
       console.log(`🎯 [GENERATE_WALLET_LIST] Generation complete. Available: ${availableCount}, Installed: ${installedCount}, Total: ${wallets.length}`);
       
-      // If no wallets are available, show appropriate message or Web3Modal for mobile
+      // If no wallets are available, show deep linking modal for all users
       if (availableCount === 0) {
-        if (isMobileDevice()) {
-          // For mobile users, show Web3Modal option
-          const web3ModalMessage = document.createElement('div');
-          web3ModalMessage.style.cssText = 'text-align: center; padding: 20px; color: #667eea;';
-          web3ModalMessage.innerHTML = `
-            <p style="margin-bottom: 15px; font-weight: bold;">📱 Mobile Wallet Connection</p>
-            <p style="margin-bottom: 20px; color: #666;">No Solana wallets detected on your mobile device</p>
-            <button id="showWeb3ModalBtn" style="
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-              border: none;
-              padding: 12px 24px;
-              border-radius: 25px;
-              font-size: 16px;
-              font-weight: bold;
-              cursor: pointer;
-              box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-              transition: all 0.3s ease;
-            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.6)'" 
-              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.4)'">
-              🔗 Connect Any Wallet
+        const deepLinkMessage = document.createElement('div');
+        deepLinkMessage.className = 'deep-link-section';
+        deepLinkMessage.style.marginTop = '20px';
+        deepLinkMessage.innerHTML = `
+          <div class="deep-link-header">
+            <h4>🌐 Mobile Wallet Deep Link</h4>
+            <p>No wallets are currently available. Use deep linking to open your mobile wallet:</p>
+          </div>
+          <div class="deep-link-buttons">
+            <button class="deep-link-btn" data-wallet="phantom" onclick="window.deepLinkHandler.openDeepLink('phantom')">
+              <img src="/phantom-logo.png" alt="Phantom" class="wallet-icon">
+              <span>Open Phantom</span>
             </button>
-            <p style="margin-top: 15px; font-size: 14px; color: #888;">Tap to connect with any supported wallet</p>
-          `;
-          walletList.appendChild(web3ModalMessage);
-          
-          // Add click handler for Web3Modal button
-          document.getElementById('showWeb3ModalBtn').addEventListener('click', function() {
-            if (window.showWeb3ModalForMobile) {
-              window.showWeb3ModalForMobile();
-            }
-          });
-        } else {
-          // For desktop users, show traditional install links
-          const noWalletMessage = document.createElement('div');
-          noWalletMessage.style.cssText = 'text-align: center; padding: 20px; color: #666; font-style: italic;';
-          noWalletMessage.innerHTML = `
-            <p>No Solana wallets detected</p>
-            <p>Please install one of the supported wallets:</p>
-            <div style="margin-top: 15px;">
-              <a href="https://phantom.app/" target="_blank" style="color: #667eea; margin: 0 10px;">Phantom</a>
-              <a href="https://solflare.com/" target="_blank" style="color: #667eea; margin: 0 10px;">Solflare</a>
-              <a href="https://backpack.app/" target="_blank" style="color: #667eea; margin: 0 10px;">Backpack</a>
-            </div>
-          `;
-          walletList.appendChild(noWalletMessage);
-        }
+            <button class="deep-link-btn" data-wallet="solflare" onclick="window.deepLinkHandler.openDeepLink('solflare')">
+              <img src="/solflare-logo.png" alt="Solflare" class="wallet-icon">
+              <span>Open Solflare</span>
+            </button>
+            <button class="deep-link-btn" data-wallet="backpack" onclick="window.deepLinkHandler.openDeepLink('backpack')">
+              <img src="/backpack-logo.png" alt="Backpack" class="wallet-icon">
+              <span>Open Backpack</span>
+            </button>
+            <button class="deep-link-btn" data-wallet="glow" onclick="window.deepLinkHandler.openDeepLink('glow')">
+              <img src="/glow-logo.png" alt="Glow" class="wallet-icon">
+              <span>Open Glow</span>
+            </button>
+            <button class="deep-link-btn" data-wallet="exodus" onclick="window.deepLinkHandler.openDeepLink('exodus')">
+              <img src="/logo.png" alt="Exodus" class="wallet-icon">
+              <span>Open Exodus</span>
+            </button>
+          </div>
+          <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 210, 63, 0.1); border-radius: 10px; border: 1px solid rgba(255, 210, 63, 0.3);">
+            <p style="margin: 0; color: #ffd23f; font-size: 14px; font-weight: 600;">
+              💡 Deep linking will open your mobile wallet app and connect to this dApp
+            </p>
+          </div>
+        `;
+        walletList.appendChild(deepLinkMessage);
       }
     }
 
