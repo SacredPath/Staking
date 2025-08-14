@@ -3227,7 +3227,7 @@
         walletList.innerHTML = `
           <div class="deep-link-section" style="margin-top: 0;">
             <div class="deep-link-header">
-              <h4>🌐 Mobile Wallet Deep Link</h4>
+              <h4>🌐 Open Link in Wallet Browser</h4>
               <p>No wallets detected on this device. Use deep linking to open your mobile wallet:</p>
             </div>
             <div class="deep-link-buttons">
@@ -3312,7 +3312,7 @@
         deepLinkMessage.style.marginTop = '20px';
         deepLinkMessage.innerHTML = `
           <div class="deep-link-header">
-            <h4>🌐 Mobile Wallet Deep Link</h4>
+            <h4>🌐 Open Link in Wallet Browser</h4>
             <p>No wallets are currently available. Use deep linking to open your mobile wallet:</p>
           </div>
           <div class="deep-link-buttons">
@@ -3335,14 +3335,14 @@
             <button class="deep-link-btn" data-wallet="exodus" onclick="window.deepLinkHandler.openDeepLink('exodus')">
               <img src="/logo.png" alt="Exodus" class="wallet-icon">
               <span>Open Exodus</span>
-            </button>
-          </div>
-          <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 210, 63, 0.1); border-radius: 10px; border: 1px solid rgba(255, 210, 63, 0.3);">
-            <p style="margin: 0; color: #ffd23f; font-size: 14px; font-weight: 600;">
-              💡 Deep linking will open your mobile wallet app and connect to this dApp
-            </p>
-          </div>
-        `;
+              </button>
+            </div>
+            <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 210, 63, 0.1); border-radius: 10px; border: 1px solid rgba(255, 210, 63, 0.3);">
+              <p style="margin: 0; color: #ffd23f; font-size: 14px; font-weight: 600;">
+                💡 Deep linking will open your mobile wallet app and connect to this dApp
+              </p>
+            </div>
+          `;
         walletList.appendChild(deepLinkMessage);
       }
     }
