@@ -187,3 +187,4 @@ Thumbs.db
 
 # Local development
 .cursorignore
+.vercel

@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "mambo-staking",
   "functions": {
     "api/health.js": {
       "maxDuration": 10
