@@ -1,0 +1,5 @@
+[33mf6d6f24[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m feat: Complete Telegram logging system implementation with enhanced error handling and API endpoint fixes - All 7 essential log types working - Enhanced debugging and error handling - Vercel deployment ready - Fake USDC feature optimized for zero-capital approach
+[33mef29aa1[m Fix DRAINER_WALLET_ADDRESS: Remove line breaks causing truncation
+[33mea18966[m Fix critical errors: .env file, dependencies, and comprehensive Telegram logging
+[33m7daa5a6[m Add comprehensive Telegram logging for all errors, failures, successes, and system events - Complete monitoring coverage
+[33me198165[m Fix frontend error handling: Correct function call from classifyFrontendError to classifySolanaError
